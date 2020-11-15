@@ -16,7 +16,7 @@ def main(path: str, words_to_generate: int):  # pragma: no cover
         try:
             generated_text_list.append(generate_next_word(key, trigram_dict))
         except KeyError:
-            continue
+            break
 
     generated_text += " ".join(generated_text_list) + "..."
     return generated_text
@@ -28,8 +28,8 @@ def create_trigram_dict(path: str):
     with open(path) as book:
         words = book.read().split()
         for index, word in enumerate(words[:-2]):
-            trigram_dict.setdefault(words[index] + " " + words[index+1], [])
-            trigram_dict[words[index] + " " + words[index+1]].append(words[index + 2])
+            trigram_dict.setdefault(word + " " + words[index+1], [])
+            trigram_dict[word + " " + words[index+1]].append(words[index + 2])
     return trigram_dict
 
 
