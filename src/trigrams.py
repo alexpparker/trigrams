@@ -1,9 +1,10 @@
+"""A module that takes in a text file and outputs a trigrams story of length n words"""
 from typing import Dict
-import random
+from random import choice
 import sys
 
 
-def main(path: str, words_to_generate: int):
+def main(path: str, words_to_generate: int):  # pragma: no cover
     generated_text = "..."
     generated_text_list = []
     trigram_dict = create_trigram_dict(path)
@@ -12,7 +13,10 @@ def main(path: str, words_to_generate: int):
 
     for i in range(words_to_generate - 2):
         key = " ".join(generated_text_list[-2:])
-        generated_text_list.append(generate_next_word(key, trigram_dict))
+        try:
+            generated_text_list.append(generate_next_word(key, trigram_dict))
+        except KeyError:
+            break
 
     generated_text += " ".join(generated_text_list) + "..."
     return generated_text
@@ -24,8 +28,8 @@ def create_trigram_dict(path: str):
     with open(path) as book:
         words = book.read().split()
         for index, word in enumerate(words[:-2]):
-            trigram_dict.setdefault(words[index] + " " + words[index+1], [])
-            trigram_dict[words[index] + " " + words[index+1]].append(words[index + 2])
+            trigram_dict.setdefault(word + " " + words[index+1], [])
+            trigram_dict[word + " " + words[index+1]].append(words[index + 2])
     return trigram_dict
 
 
@@ -40,14 +44,13 @@ def choose_starter_words(trigram_dict: Dict):
     return starter_key
 
 
-def generate_next_word(starter_words: str, trigram_dict: Dict):
+def generate_next_word(starter_words: str, trigram_dict: Dict):  # pragma: no cover
     """Takes in the key string containing the two starter words and dictionary to use, then returns the next word"""
-    return random.choice(trigram_dict[starter_words])
+    return choice(trigram_dict[starter_words])
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     print(main(sys.argv[1], int(sys.argv[2])))
-
 
 # sherlock = "../texts/sherlock.txt"
 
