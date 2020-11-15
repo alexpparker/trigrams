@@ -1,4 +1,4 @@
-"""a module that takes in a text file and outputs a trigrams story of length n words"""
+"""A module that takes in a text file and outputs a trigrams story of length n words"""
 from typing import Dict
 from random import choice
 import sys
